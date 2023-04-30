@@ -6,29 +6,50 @@ document.getElementById("play").addEventListener("click", initGame);
 
 function initGame() {
 
-    // genera bombe
-    
-
     // creo costante difficoltà per agire sulla difficoltà
     const difficoltà = document.getElementById("difficoltà").value;
 
+    let punti = 0;
+    console.log("punteggio: ", punti);
+    
+    // creo il main
+    const main = document.querySelector("main");
+
+    // svuota il main
+    main.innerHTML = "";
+
+    // creo un div
+    const griglia = document.createElement("div");
+    // creo le classi per il div
+    griglia.classList.add("container", "flex", "wrap");
+
+    const punteggio = document.createElement("div");
+
+    punteggio.classList.add("punteggio");
+
+    const parolaPunteggio = document.createElement("div");
+
+    parolaPunteggio.innerText = "Punteggio: ";
+
+    const puntiPunteggio = document.createElement("div");
+
+    puntiPunteggio.innerText = (punti);
+
+    let gameover = false;
+
+
+    // appendo 
+    main.appendChild(griglia);
+    main.appendChild(punteggio);
+    punteggio.appendChild(parolaPunteggio);
+    punteggio.appendChild(puntiPunteggio);
+    
     if (difficoltà == "1") {
+
+        let bombe = generabombe(16,100);
+        console.log(bombe);
+
         console.log("gioco avviato in difficoltà facile");
-
-        // creo 16 bombe per 49 caselle
-        let bombe = generabombe(16,100)
-        console.log(bombe)
-        
-        // creo il main
-        const main = document.querySelector("main");
-
-        // svuota il main
-        main.innerHTML = "";
-
-        // creo un div
-        const griglia = document.createElement("div");
-        // creo le classi per il div
-        griglia.classList.add("container", "flex", "wrap");
 
         // creo celle da 0 a 100
         for (let i = 0; i < 100; i++) {
@@ -42,56 +63,32 @@ function initGame() {
             box.innerText = (i+1);
 
             box.addEventListener("click", function() {
-                console.log("this: ", parseInt(this.innerText));
 
-                // PARSEINT!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // let cellacorrente = parseInt(this.innerText);
-                let cellacorrente = i+1;
+                console.log("Punteggio: ", punti)
 
-                if (bombe.includes(cellacorrente)) {
-                    this.classList.add("bomb");     
-                }else{
-                    this.classList.add("safe");
+                if (gameover==false) {
+                    let cellacorrente = i+1;
+
+                    if (bombe.includes(cellacorrente)) {
+                        this.classList.add("bomb");  
+                        scopriBombe(bombe);
+                        gameover = true;   
+                    }else{
+                        this.classList.add("safe");
+                        punti++;
+                        puntiPunteggio.innerText = (punti)
+                    }
+                } else {
+                    console.error("hai perso")
                 }
-
             });
-
-
         }
-
-
-
-        // var arr = [];
-        //     while (arr.length < 16) {
-        //         var r = Math.floor(Math.random() * 100) + 1;
-        //         if(arr.indexOf(r) === -1) arr.push(r);
-        //     }
-        // console.log(arr);
-
-
-        // appendo la griglia grande
-        main.appendChild(griglia);
-
-        
     } else if (difficoltà == "2") {
 
+        let bombe = generabombe(16,81);
+        console.log(bombe);
+
         console.log("gioco avviato in difficoltà media");
-
-        // creo 16 bombe per 49 caselle
-        let bombe = generabombe(16,81)
-        console.log(bombe)
-
-        // creo il main
-        const main = document.querySelector("main");
-
-        // svuota il main
-        main.innerHTML = "";
-
-        // creo un div
-        const griglia = document.createElement("div");
-
-        // creo le classi per il div
-        griglia.classList.add("container", "flex", "wrap");
 
         // creo celle da 0 a 81
         for (let i = 0; i < 81; i++) {
@@ -119,34 +116,18 @@ function initGame() {
                     this.classList.add("bomb");     
                 }else{
                     this.classList.add("safe");
+                    punti++;
+                    console.log("punti: ", punti)
+                    puntiPunteggio.innerText = (punti)
                 }
-
             });
-            
         }
-
-        // appendo la griglia grande
-        main.appendChild(griglia);
-
     } else if (difficoltà == "3") {
 
+        let bombe = generabombe(16,49);
+        console.log(bombe);
+
         console.log("gioco avviato in difficoltà difficile");
-
-        // creo 16 bombe per 49 caselle
-        let bombe = generabombe(16,49)
-        console.log(bombe)
-
-        // creo il main
-        const main = document.querySelector("main");
-
-        // svuota il main
-        main.innerHTML = "";
-
-        // creo un div
-        const griglia = document.createElement("div");
-
-        // creo le classi per il div
-        griglia.classList.add("container", "flex", "wrap");
 
         // creo celle da 0 a 49
         for (let i = 0; i < 49; i++) {
@@ -174,23 +155,13 @@ function initGame() {
                     this.classList.add("bomb");     
                 }else{
                     this.classList.add("safe");
+                    punti++;
+                    console.log("punti: ", punti)
+                    puntiPunteggio.innerText = (punti)
                 }
-
             });         
         }
-
-
-        // for (let i = 1; i < 16; i++) {
-        //     var value = Math.floor(Math.random() * 2) + 1; 
-        //     console.log(value);
-        // }
-
-        // appendo la griglia grande
-        main.appendChild(griglia);
     }
-
-
-
 }
 
 function getRandomNumber(min, max) {
@@ -202,7 +173,7 @@ function generabombe(numerodibombe, numerodicelle) {
 
     let bombe = []
 
-    while (bombe.length < 16) {
+    while (bombe.length < numerodibombe) {
 
         let nuovonumero = getRandomNumber(1, numerodicelle);
 
@@ -219,4 +190,18 @@ function generabombe(numerodibombe, numerodicelle) {
     }
     
     return bombe
+}
+
+function scopriBombe(bombe) {
+
+    let celle = document.getElementsByClassName("cella");
+    console.log("Bombe", bombe);
+
+    for (let i = 0; i < celle.length; i++) {
+        const box = celle[i];
+        
+        if (bombe.includes(i+1)) {
+            box.classList.add("bomb")
+        }
+    }
 }
