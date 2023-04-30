@@ -73,13 +73,19 @@ function initGame() {
                         this.classList.add("bomb");  
                         scopriBombe(bombe);
                         gameover = true;   
+                        alert("partita terminata");
                     }else{
                         this.classList.add("safe");
                         punti++;
                         puntiPunteggio.innerText = (punti)
+
+                        if(punteggio == 100 - 16) {
+                            gameover = true;
+                            alert("partita terminata");
+
+                        }
                     }
                 } else {
-                    console.error("hai perso")
                 }
             });
         }
@@ -92,33 +98,38 @@ function initGame() {
 
         // creo celle da 0 a 81
         for (let i = 0; i < 81; i++) {
-
             // creo un div
             const box = document.createElement("div");
-
             // lo appendo come figlio a "griglia"
             griglia.appendChild(box);
-
             // creo classi per il div
             box.classList.add("cella", "medium");
-
             // aggiungo il testo (i) da 0 a 100 a "box"
             box.innerText = (i+1);
 
             box.addEventListener("click", function() {
+
                 console.log("this: ", parseInt(this.innerText));
 
-                // PARSEINT!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // let cellacorrente = parseInt(this.innerText);
-                let cellacorrente = i+1;
+                if (gameover==false) {
+                    let cellacorrente = i+1;
 
-                if (bombe.includes(cellacorrente)) {
-                    this.classList.add("bomb");     
-                }else{
-                    this.classList.add("safe");
-                    punti++;
-                    console.log("punti: ", punti)
-                    puntiPunteggio.innerText = (punti)
+                    if (bombe.includes(cellacorrente)) {
+                        this.classList.add("bomb");  
+                        scopriBombe(bombe);
+                        gameover = true;   
+                        alert("partita terminata");
+                    }else{
+                        this.classList.add("safe");
+                        punti++;
+                        puntiPunteggio.innerText = (punti)
+
+                        if(punteggio == 81 - 16) {
+                            gameover = true;
+                            alert("partita terminata");
+                        }
+                    }
+                } else {
                 }
             });
         }
@@ -131,33 +142,38 @@ function initGame() {
 
         // creo celle da 0 a 49
         for (let i = 0; i < 49; i++) {
-
             // creo un div
             const box = document.createElement("div");
-
             // lo appendo come figlio a "griglia"
             griglia.appendChild(box);
-
             // creo classi per il div
             box.classList.add("cella", "hard");
-
             // aggiungo il testo (i) da 0 a 100 a "box"
             box.innerText = (i+1);
 
             box.addEventListener("click", function() {
+
                 console.log("this: ", parseInt(this.innerText));
 
-                // PARSEINT!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // let cellacorrente = parseInt(this.innerText);
-                let cellacorrente = i+1;
+                if (gameover==false) {
+                    let cellacorrente = i+1;
 
-                if (bombe.includes(cellacorrente)) {
-                    this.classList.add("bomb");     
-                }else{
-                    this.classList.add("safe");
-                    punti++;
-                    console.log("punti: ", punti)
-                    puntiPunteggio.innerText = (punti)
+                    if (bombe.includes(cellacorrente)) {
+                        this.classList.add("bomb");  
+                        scopriBombe(bombe);
+                        gameover = true;   
+                        alert("partita terminata");
+                    }else{
+                        this.classList.add("safe");
+                        punti++;
+                        puntiPunteggio.innerText = (punti)
+
+                        if(punteggio == 49 - 16) {
+                            gameover = true;
+                            alert("partita terminata");
+                        }
+                    }
+                } else {
                 }
             });         
         }
@@ -194,6 +210,7 @@ function generabombe(numerodibombe, numerodicelle) {
 
 function scopriBombe(bombe) {
 
+    // seleziono tutti i div con la classe "cella" 
     let celle = document.getElementsByClassName("cella");
     console.log("Bombe", bombe);
 
@@ -201,7 +218,7 @@ function scopriBombe(bombe) {
         const box = celle[i];
         
         if (bombe.includes(i+1)) {
-            box.classList.add("bomb")
+            box.classList.add("bomb");
         }
     }
 }
